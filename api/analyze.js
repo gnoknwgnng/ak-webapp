@@ -1,5 +1,4 @@
-const axios = require('axios');
-const cheerio = require('cheerio');
+// No external dependencies - use built-in modules only
 
 module.exports = async function handler(req, res) {
   // Enable CORS
@@ -26,24 +25,14 @@ module.exports = async function handler(req, res) {
 
     console.log(`Analyzing website: ${url}`);
     
-    // Simple website scraping
-    const response = await axios.get(url, {
-      timeout: 30000,
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-      }
-    });
-
-    const $ = cheerio.load(response.data);
-    
-    // Extract basic data
-    const title = $('title').text() || 'No title found';
-    const metaDescription = $('meta[name="description"]').attr('content') || '';
-    const h1Count = $('h1').length;
-    const imageCount = $('img').length;
-    const imagesWithoutAlt = $('img:not([alt])').length;
-    const linkCount = $('a').length;
-    const wordCount = $('body').text().replace(/\s+/g, ' ').trim().split(' ').length;
+    // For now, return mock data to test if the function works
+    const title = 'Sample Website Title';
+    const metaDescription = 'Sample meta description for testing';
+    const h1Count = 1;
+    const imageCount = 5;
+    const imagesWithoutAlt = 2;
+    const linkCount = 10;
+    const wordCount = 450;
 
     // Calculate scores
     const seoScore = calculateSEOScore(title, metaDescription, h1Count, imagesWithoutAlt);

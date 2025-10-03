@@ -9,13 +9,7 @@
     "build": "echo 'Build complete'",
     "vercel-build": "echo 'Vercel build complete'"
   },
-  "dependencies": {
-    "groq-sdk": "^0.7.0",
-    "cheerio": "^1.0.0-rc.12",
-    "axios": "^1.6.0",
-    "express": "^4.18.2",
-    "cors": "^2.8.5"
-  },
+  "dependencies": {},
   "keywords": ["website", "analysis", "seo", "grammar", "scraping"],
   "author": "",
   "license": "MIT"
