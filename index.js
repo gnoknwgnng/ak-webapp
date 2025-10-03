@@ -8,7 +8,7 @@ const port = process.env.PORT || 3000;
 // Middleware
 app.use(cors());
 app.use(express.json());
-app.use(express.static('.'));
+app.use(express.static('public'));
 
 // Routes
 app.post('/analyze', async (req, res) => {
@@ -36,7 +36,7 @@ app.post('/analyze', async (req, res) => {
 });
 
 app.get('/', (req, res) => {
-  res.sendFile('index.html', { root: '.' });
+  res.sendFile('index.html', { root: 'public' });
 });
 
 app.listen(port, () => {
