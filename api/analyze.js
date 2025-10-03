@@ -1,64 +1,40 @@
-export default function handler(req, res) {
+import { WebsiteAnalyzer } from '../src/analyzer.js';
+
+export default async function handler(req, res) {
+  // Enable CORS
+  res.setHeader('Access-Control-Allow-Credentials', true);
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+  res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
+
   if (req.method === 'OPTIONS') {
     res.status(200).end();
     return;
   }
-  
+
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const report = {
-    performanceMetrics: {
-      overall: 85,
-      seo: 80,
-      content: 90,
-      technical: 85,
-      issues: {
-        technical: 0,
-        seo: 1,
-        content: 0,
-        totalIssues: 1
-      }
-    },
-    executiveSummary: {
-      overallAssessment: "Website performance is good with a score of 85/100.",
-      keyStrengths: ["Page title is present", "Adequate content length"],
-      criticalIssues: ["Missing meta description"],
-      businessImpact: "Improving these areas will enhance search visibility and user experience."
-    },
-    technicalAnalysis: {
-      htmlStructure: { score: 90, issues: 1 },
-      pageSpeed: { score: 85, loadTime: '2.3s' },
-      mobileOptimization: { score: 80, responsive: true },
-      issues: [{ type: 'high', issue: 'Missing meta description', impact: 'Reduced search visibility' }],
-      recommendations: ['Create meta description', 'Optimize images with alt text']
-    },
-    seoRecommendations: {
-      onPageSEO: { score: 85, recommendations: [{ priority: 'High', recommendation: 'Create compelling meta description (120-160 chars)', impact: 'Better CTR' }] },
-      technicalSEO: { score: 75, issues: [] }
-    },
-    actionPlan: {
-      highPriority: ['Create compelling meta description'],
-      mediumPriority: ['Expand content to improve depth and value'],
-      lowPriority: [],
-      estimatedImpact: 'High - improved search visibility and user engagement'
-    },
-    detailedFindings: `## Content Optimization
-- **Word Count**: 450 words
-- **Title**: Sample Website Title
-- **Images**: 5 total images found
-- **Links**: 10 total links found
+  try {
+    const { url } = req.body;
+    
+    if (!url) {
+      return res.status(400).json({ error: 'URL is required' });
+    }
 
-## Technical SEO
-- **URL Structure**: Clean and readable
-- **Page Speed**: Good performance detected
-- **Mobile Friendly**: Responsive design elements found`
-  };
-
-  res.json(report);
+    console.log(`Analyzing website: ${url}`);
+    const analyzer = new WebsiteAnalyzer();
+    const report = await analyzer.analyzeWebsite(url);
+    
+    console.log('Analysis completed successfully');
+    res.json(report);
+    
+  } catch (error) {
+    console.error('Analysis error:', error);
+    res.status(500).json({
+      error: 'Failed to analyze website',
+      details: error.message
+    });
+  }
 }
