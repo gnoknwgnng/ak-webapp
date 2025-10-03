@@ -18,7 +18,7 @@ functions:
   - name: analyze
     handler: serverless.js
     timeout: 60s
-    memory: 256MB
+    memory: 384MB
     events:
       - http:
           path: /api/analyze
