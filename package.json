@@ -2,7 +2,7 @@
   "name": "website-analyzer",
   "version": "1.0.0",
   "description": "Website analysis tool with grammar checking and SEO reporting",
-  "main": "index.js",
+
   "type": "module",
   "scripts": {
     "start": "node index.js",
