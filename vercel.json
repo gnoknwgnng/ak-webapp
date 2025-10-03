@@ -1,7 +1,11 @@
 {
+  "version": 2,
   "functions": {
     "api/analyze.js": {
       "maxDuration": 60
+    },
+    "api/simple-test.js": {
+      "maxDuration": 30
     }
   },
   "rewrites": [
