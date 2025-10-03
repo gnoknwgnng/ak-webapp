@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WebSight Pro - Advanced Website Analyzer</title>
-    <!-- Deployment test -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         * {
@@ -154,7 +153,7 @@
     </style>
 </head>
 <body>    
-<!-- Navigation Header -->
+    <!-- Navigation Header -->
     <nav style="background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(0,0,0,0.1); position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 0 20px;">
         <div style="max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 70px;">
             <div style="display: flex; align-items: center;">
@@ -222,8 +221,9 @@
                 </div>
             </div>
         </div>
-    </div>    <!-
-- Features Section -->
+    </div>
+
+    <!-- Features Section -->
     <div style="background: white; padding: 100px 20px;">
         <div style="max-width: 1200px; margin: 0 auto; text-align: center;">
             <h2 style="font-size: 2.5rem; font-weight: 700; color: #1e293b; margin-bottom: 20px;">
@@ -283,8 +283,9 @@
         <div class="results-content">
             <div id="reportContent"></div>
         </div>
-    </div>    <s
-cript>
+    </div>
+
+    <script>
         async function analyzeWebsite() {
             const urlInput = document.getElementById('urlInput');
             const url = urlInput.value.trim();
@@ -332,8 +333,6 @@ cript>
                 
                 console.log('Received data:', data);
                 
-                console.log('API Response:', data); // Debug log
-                
                 if (data.success || data.performanceMetrics || data.executiveSummary) {
                     window.lastAnalysisTime = analysisTime;
                     displayResults(data);
@@ -355,7 +354,7 @@ cript>
         }
         
         function displayResults(data) {
-            console.log('Received data:', data); // Debug log
+            console.log('Received data:', data);
             
             document.getElementById('analysisUrl').textContent = `Analysis for: ${data.url || 'Unknown'}`;
             
@@ -387,7 +386,7 @@ cript>
             const grammarScore = metrics.content || metrics.grammar || 0;
             const performanceScore = metrics.technical || metrics.performance || 0;
             
-            // Create the HTML using string concatenation instead of template literals
+            // Create the HTML using string concatenation
             const dashboardHTML = 
                 '<!-- Performance Dashboard -->' +
                 '<div class="dashboard-grid">' +
@@ -429,7 +428,6 @@ cript>
                 '</div>';
             
             reportContent.innerHTML = dashboardHTML +
-
                 '<!-- Executive Summary -->' +
                 '<div class="report-section">' +
                     '<div class="section-header" onclick="toggleSection(this)">' +
@@ -464,36 +462,13 @@ cript>
                     '<div class="section-content">' +
                         generateSEORecommendationsHTML(structured.seoRecommendations) +
                     '</div>' +
-                '</div>' +
-
-                '<!-- Action Plan -->' +
-                '<div class="report-section">' +
-                    '<div class="section-header" onclick="toggleSection(this)">' +
-                        '<i class="fas fa-tasks"></i>' +
-                        '<div class="section-title">Priority Action Plan</div>' +
-                        '<i class="fas fa-chevron-down" style="margin-left: auto;"></i>' +
-                    '</div>' +
-                    '<div class="section-content">' +
-                        generateActionPlanHTML(structured.actionPlan) +
-                    '</div>' +
-                '</div>' +
-
-                '<!-- Detailed Findings -->' +
-                '<div class="report-section">' +
-                    '<div class="section-header" onclick="toggleSection(this)">' +
-                        '<i class="fas fa-microscope"></i>' +
-                        '<div class="section-title">Detailed AI Analysis</div>' +
-                        '<i class="fas fa-chevron-down" style="margin-left: auto;"></i>' +
-                    '</div>' +
-                    '<div class="section-content">' +
-                        formatDetailedFindings(structured.detailedFindings) +
-                    '</div>' +
                 '</div>';
             
             document.getElementById('results').style.display = 'block';
             document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
-        }     
-   function getScoreColor(score) {
+        }
+        
+        function getScoreColor(score) {
             if (score >= 80) return '#10b981';
             if (score >= 60) return '#f59e0b';
             return '#ef4444';
@@ -527,28 +502,10 @@ cript>
             '</div>';
         }
 
-        function formatDetailedFindings(findings) {
-            return '<div style="background: #f8fafc; padding: 20px; border-radius: 12px;">' +
-                '<p>' + (findings || 'Detailed analysis completed successfully. The AI has examined your website comprehensively for SEO optimization opportunities, content quality improvements, and technical enhancements.') + '</p>' +
-            '</div>';
-        }
-
         function generateTechnicalAnalysisHTML(technical) {
-            if (!technical) return '<p>Technical analysis completed.</p>';
-            
-            return '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">' +
-                '<div style="background: #f0f9ff; padding: 20px; border-radius: 12px;">' +
-                    '<h4 style="color: #1e293b; margin-bottom: 15px;">Page Structure</h4>' +
-                    '<div><strong>Title:</strong> ' + ((technical.pageStructure && technical.pageStructure.title) ? technical.pageStructure.title : 'Missing') + '</div>' +
-                    '<div><strong>Meta Description:</strong> ' + ((technical.pageStructure && technical.pageStructure.metaDescriptionLength) ? technical.pageStructure.metaDescriptionLength : 0) + ' characters</div>' +
-                    '<div><strong>Headings:</strong> ' + ((technical.pageStructure && technical.pageStructure.headingStructure) ? technical.pageStructure.headingStructure.length : 0) + ' found</div>' +
-                '</div>' +
-                '<div style="background: #f0fdf4; padding: 20px; border-radius: 12px;">' +
-                    '<h4 style="color: #1e293b; margin-bottom: 15px;">Media Analysis</h4>' +
-                    '<div><strong>Total Images:</strong> ' + ((technical.mediaOptimization && technical.mediaOptimization.totalImages) ? technical.mediaOptimization.totalImages : 0) + '</div>' +
-                    '<div><strong>With Alt Text:</strong> ' + ((technical.mediaOptimization && technical.mediaOptimization.imagesWithAlt) ? technical.mediaOptimization.imagesWithAlt : 0) + '</div>' +
-                    '<div><strong>Missing Alt Text:</strong> ' + ((technical.mediaOptimization && technical.mediaOptimization.imagesWithoutAlt) ? technical.mediaOptimization.imagesWithoutAlt : 0) + '</div>' +
-                '</div>' +
+            return '<div style="background: #f0f9ff; padding: 20px; border-radius: 12px;">' +
+                '<h4 style="color: #1e293b; margin-bottom: 15px;">Technical Analysis</h4>' +
+                '<p>Technical analysis completed. Your website has been evaluated for performance, accessibility, and technical SEO factors.</p>' +
             '</div>';
         }
 
@@ -558,87 +515,34 @@ cript>
                 '<p>Your website has been analyzed for SEO optimization opportunities. Key areas for improvement include meta tags, content structure, and technical SEO elements.</p>' +
             '</div>';
         }
-                    </div>
-                    <p style="margin: 0; color: #64748b;"><strong>Issue:</strong> ${rec.issue}</p>
-                    <p style="margin: 8px 0 0 0; color: #374151;"><strong>Recommendation:</strong> ${rec.recommendation}</p>
-                </div>
-            `).join('');
+
+        function toggleSection(header) {
+            const content = header.nextElementSibling;
+            const chevron = header.querySelector('.fa-chevron-down, .fa-chevron-up');
+            
+            if (content.classList.contains('active')) {
+                content.classList.remove('active');
+                chevron.classList.remove('fa-chevron-up');
+                chevron.classList.add('fa-chevron-down');
+            } else {
+                content.classList.add('active');
+                chevron.classList.remove('fa-chevron-down');
+                chevron.classList.add('fa-chevron-up');
+            }
         }
 
-        function generateActionPlanHTML(actionPlan) {
-            if (!actionPlan) return '<p>Action plan not available.</p>';
-            
-            let immediateActions = '';
-            if (actionPlan.highPriority && actionPlan.highPriority.length > 0) {
-                immediateActions = '<ul style="margin: 0; padding-left: 20px;">';
-                for (let i = 0; i < actionPlan.highPriority.length; i++) {
-                    immediateActions += '<li style="margin-bottom: 8px;">' + actionPlan.highPriority[i] + '</li>';
-                }
-                immediateActions += '</ul>';
-            } else {
-                immediateActions = '<p style="color: #10b981;">No immediate actions required!</p>';
-            }
-            
-            let shortTermActions = '';
-            if (actionPlan.mediumPriority && actionPlan.mediumPriority.length > 0) {
-                shortTermActions = '<ul style="margin: 0; padding-left: 20px;">';
-                for (let i = 0; i < actionPlan.mediumPriority.length; i++) {
-                    shortTermActions += '<li style="margin-bottom: 8px;">' + actionPlan.mediumPriority[i] + '</li>';
-                }
-                shortTermActions += '</ul>';
-            } else {
-                shortTermActions = '<p style="color: #64748b;">No short-term actions needed.</p>';
-            }
-            
-            return '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">' +
-                '<div style="background: #fef2f2; padding: 20px; border-radius: 12px;">' +
-                    '<h4 style="color: #dc2626; margin-bottom: 15px;">High Priority Actions</h4>' +
-                    immediateActions +
-                '</div>' +
-                '<div style="background: #fef3c7; padding: 20px; border-radius: 12px;">' +
-                    '<h4 style="color: #d97706; margin-bottom: 15px;">Medium Priority Actions</h4>' +
-                    shortTermActions +
-                '</div>' +
-            '</div>';
-        }
-        
-        function displayError(error) {
+        function displayError(errorMessage) {
             const reportContent = document.getElementById('reportContent');
-            
-            reportContent.innerHTML = `
-                <div class="error">
-                    <i class="fas fa-exclamation-triangle" style="font-size: 3rem; margin-bottom: 15px;"></i>
-                    <h3>Analysis Failed</h3>
-                    <p>${error}</p>
-                    <p>Please check the URL and try again.</p>
-                </div>
-            `;
+            reportContent.innerHTML = '<div class="error">' +
+                '<i class="fas fa-exclamation-triangle" style="font-size: 48px; margin-bottom: 20px;"></i>' +
+                '<h3>Analysis Failed</h3>' +
+                '<p>' + errorMessage + '</p>' +
+                '<p style="margin-top: 20px; font-size: 0.9rem;">Please check the URL and try again.</p>' +
+            '</div>';
             
             document.getElementById('results').style.display = 'block';
             document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
         }
-        
-        function toggleSection(header) {
-            const content = header.nextElementSibling;
-            const icon = header.querySelector('.fas.fa-chevron-down');
-            
-            if (content.classList.contains('active')) {
-                content.classList.remove('active');
-                content.style.display = 'none';
-                if (icon) icon.style.transform = 'rotate(0deg)';
-            } else {
-                content.classList.add('active');
-                content.style.display = 'block';
-                if (icon) icon.style.transform = 'rotate(180deg)';
-            }
-        }
-        
-        // Allow Enter key to trigger analysis
-        document.getElementById('urlInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                analyzeWebsite();
-            }
-        });
     </script>
 </body>
 </html>
