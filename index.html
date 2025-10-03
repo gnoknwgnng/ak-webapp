@@ -313,7 +313,9 @@ cript>
             try {
                 const startTime = Date.now();
                 // Determine the API endpoint based on environment
-                const apiEndpoint = window.location.hostname.includes('leap') 
+                const apiEndpoint = window.location.hostname.includes('netlify') 
+                    ? '/.netlify/functions/analyze'  // Netlify endpoint
+                    : window.location.hostname.includes('leap') 
                     ? '/api/analyze'  // Leap Cell endpoint
                     : '/api/analyze'; // Local development
                 
