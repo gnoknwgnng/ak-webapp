@@ -387,106 +387,108 @@ cript>
             const grammarScore = metrics.content || metrics.grammar || 0;
             const performanceScore = metrics.technical || metrics.performance || 0;
             
-            reportContent.innerHTML = `
-                <!-- Performance Dashboard -->
-                <div class="dashboard-grid">
-                    <div class="metric-card" style="border-left: 4px solid #3b82f6;">
-                        <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">
-                            <i class="fas fa-search" style="font-size: 24px; color: #3b82f6; margin-right: 12px;"></i>
-                            <h3 style="margin: 0; color: #1e293b;">SEO Score</h3>
-                        </div>
-                        <div class="metric-score" style="color: ${getScoreColor(seoScore)};">${seoScore}/100</div>
-                        <div style="color: #64748b; font-size: 0.9rem;">Search optimization level</div>
-                    </div>
+            // Create the HTML using string concatenation instead of template literals
+            const dashboardHTML = 
+                '<!-- Performance Dashboard -->' +
+                '<div class="dashboard-grid">' +
+                    '<div class="metric-card" style="border-left: 4px solid #3b82f6;">' +
+                        '<div style="display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">' +
+                            '<i class="fas fa-search" style="font-size: 24px; color: #3b82f6; margin-right: 12px;"></i>' +
+                            '<h3 style="margin: 0; color: #1e293b;">SEO Score</h3>' +
+                        '</div>' +
+                        '<div class="metric-score" style="color: ' + getScoreColor(seoScore) + ';">' + seoScore + '/100</div>' +
+                        '<div style="color: #64748b; font-size: 0.9rem;">Search optimization level</div>' +
+                    '</div>' +
                     
-                    <div class="metric-card" style="border-left: 4px solid #f59e0b;">
-                        <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">
-                            <i class="fas fa-spell-check" style="font-size: 24px; color: #f59e0b; margin-right: 12px;"></i>
-                            <h3 style="margin: 0; color: #1e293b;">Content Quality</h3>
-                        </div>
-                        <div class="metric-score" style="color: ${getScoreColor(grammarScore)};">${grammarScore}/100</div>
-                        <div style="color: #64748b; font-size: 0.9rem;">Grammar & readability</div>
-                    </div>
+                    '<div class="metric-card" style="border-left: 4px solid #f59e0b;">' +
+                        '<div style="display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">' +
+                            '<i class="fas fa-spell-check" style="font-size: 24px; color: #f59e0b; margin-right: 12px;"></i>' +
+                            '<h3 style="margin: 0; color: #1e293b;">Content Quality</h3>' +
+                        '</div>' +
+                        '<div class="metric-score" style="color: ' + getScoreColor(grammarScore) + ';">' + grammarScore + '/100</div>' +
+                        '<div style="color: #64748b; font-size: 0.9rem;">Grammar & readability</div>' +
+                    '</div>' +
                     
-                    <div class="metric-card" style="border-left: 4px solid #8b5cf6;">
-                        <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">
-                            <i class="fas fa-cogs" style="font-size: 24px; color: #8b5cf6; margin-right: 12px;"></i>
-                            <h3 style="margin: 0; color: #1e293b;">Technical</h3>
-                        </div>
-                        <div class="metric-score" style="color: ${getScoreColor(performanceScore)};">${performanceScore}/100</div>
-                        <div style="color: #64748b; font-size: 0.9rem;">Technical performance</div>
-                    </div>
+                    '<div class="metric-card" style="border-left: 4px solid #8b5cf6;">' +
+                        '<div style="display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">' +
+                            '<i class="fas fa-cogs" style="font-size: 24px; color: #8b5cf6; margin-right: 12px;"></i>' +
+                            '<h3 style="margin: 0; color: #1e293b;">Technical</h3>' +
+                        '</div>' +
+                        '<div class="metric-score" style="color: ' + getScoreColor(performanceScore) + ';">' + performanceScore + '/100</div>' +
+                        '<div style="color: #64748b; font-size: 0.9rem;">Technical performance</div>' +
+                    '</div>' +
                     
-                    <div class="metric-card" style="border-left: 4px solid #10b981;">
-                        <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">
-                            <i class="fas fa-chart-bar" style="font-size: 24px; color: #10b981; margin-right: 12px;"></i>
-                            <h3 style="margin: 0; color: #1e293b;">Overall</h3>
-                        </div>
-                        <div class="metric-score" style="color: ${getScoreColor(overallScore)};">${overallScore}/100</div>
-                        <div style="color: #64748b; font-size: 0.9rem;">Website health</div>
-                    </div>
-                </div>
+                    '<div class="metric-card" style="border-left: 4px solid #10b981;">' +
+                        '<div style="display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">' +
+                            '<i class="fas fa-chart-bar" style="font-size: 24px; color: #10b981; margin-right: 12px;"></i>' +
+                            '<h3 style="margin: 0; color: #1e293b;">Overall</h3>' +
+                        '</div>' +
+                        '<div class="metric-score" style="color: ' + getScoreColor(overallScore) + ';">' + overallScore + '/100</div>' +
+                        '<div style="color: #64748b; font-size: 0.9rem;">Website health</div>' +
+                    '</div>' +
+                '</div>';
+            
+            reportContent.innerHTML = dashboardHTML +
 
-                <!-- Executive Summary -->
-                <div class="report-section">
-                    <div class="section-header" onclick="toggleSection(this)">
-                        <i class="fas fa-chart-line"></i>
-                        <div class="section-title">Executive Summary</div>
-                        <i class="fas fa-chevron-down" style="margin-left: auto;"></i>
-                    </div>
-                    <div class="section-content active">
-                        ${formatExecutiveSummary(structured.executiveSummary, data)}
-                    </div>
-                </div>
+                '<!-- Executive Summary -->' +
+                '<div class="report-section">' +
+                    '<div class="section-header" onclick="toggleSection(this)">' +
+                        '<i class="fas fa-chart-line"></i>' +
+                        '<div class="section-title">Executive Summary</div>' +
+                        '<i class="fas fa-chevron-down" style="margin-left: auto;"></i>' +
+                    '</div>' +
+                    '<div class="section-content active">' +
+                        formatExecutiveSummary(structured.executiveSummary, data) +
+                    '</div>' +
+                '</div>' +
 
-                <!-- Technical Analysis -->
-                <div class="report-section">
-                    <div class="section-header" onclick="toggleSection(this)">
-                        <i class="fas fa-cogs"></i>
-                        <div class="section-title">Technical Analysis</div>
-                        <i class="fas fa-chevron-down" style="margin-left: auto;"></i>
-                    </div>
-                    <div class="section-content">
-                        ${generateTechnicalAnalysisHTML(structured.technicalAnalysis)}
-                    </div>
-                </div>
+                '<!-- Technical Analysis -->' +
+                '<div class="report-section">' +
+                    '<div class="section-header" onclick="toggleSection(this)">' +
+                        '<i class="fas fa-cogs"></i>' +
+                        '<div class="section-title">Technical Analysis</div>' +
+                        '<i class="fas fa-chevron-down" style="margin-left: auto;"></i>' +
+                    '</div>' +
+                    '<div class="section-content">' +
+                        generateTechnicalAnalysisHTML(structured.technicalAnalysis) +
+                    '</div>' +
+                '</div>' +
 
-                <!-- SEO Recommendations -->
-                <div class="report-section">
-                    <div class="section-header" onclick="toggleSection(this)">
-                        <i class="fas fa-search-plus"></i>
-                        <div class="section-title">SEO Optimization</div>
-                        <i class="fas fa-chevron-down" style="margin-left: auto;"></i>
-                    </div>
-                    <div class="section-content">
-                        ${generateSEORecommendationsHTML(structured.seoRecommendations)}
-                    </div>
-                </div>
+                '<!-- SEO Recommendations -->' +
+                '<div class="report-section">' +
+                    '<div class="section-header" onclick="toggleSection(this)">' +
+                        '<i class="fas fa-search-plus"></i>' +
+                        '<div class="section-title">SEO Optimization</div>' +
+                        '<i class="fas fa-chevron-down" style="margin-left: auto;"></i>' +
+                    '</div>' +
+                    '<div class="section-content">' +
+                        generateSEORecommendationsHTML(structured.seoRecommendations) +
+                    '</div>' +
+                '</div>' +
 
-                <!-- Action Plan -->
-                <div class="report-section">
-                    <div class="section-header" onclick="toggleSection(this)">
-                        <i class="fas fa-tasks"></i>
-                        <div class="section-title">Priority Action Plan</div>
-                        <i class="fas fa-chevron-down" style="margin-left: auto;"></i>
-                    </div>
-                    <div class="section-content">
-                        ${generateActionPlanHTML(structured.actionPlan)}
-                    </div>
-                </div>
+                '<!-- Action Plan -->' +
+                '<div class="report-section">' +
+                    '<div class="section-header" onclick="toggleSection(this)">' +
+                        '<i class="fas fa-tasks"></i>' +
+                        '<div class="section-title">Priority Action Plan</div>' +
+                        '<i class="fas fa-chevron-down" style="margin-left: auto;"></i>' +
+                    '</div>' +
+                    '<div class="section-content">' +
+                        generateActionPlanHTML(structured.actionPlan) +
+                    '</div>' +
+                '</div>' +
 
-                <!-- Detailed Findings -->
-                <div class="report-section">
-                    <div class="section-header" onclick="toggleSection(this)">
-                        <i class="fas fa-microscope"></i>
-                        <div class="section-title">Detailed AI Analysis</div>
-                        <i class="fas fa-chevron-down" style="margin-left: auto;"></i>
-                    </div>
-                    <div class="section-content">
-                        ${formatDetailedFindings(structured.detailedFindings)}
-                    </div>
-                </div>
-            `;
+                '<!-- Detailed Findings -->' +
+                '<div class="report-section">' +
+                    '<div class="section-header" onclick="toggleSection(this)">' +
+                        '<i class="fas fa-microscope"></i>' +
+                        '<div class="section-title">Detailed AI Analysis</div>' +
+                        '<i class="fas fa-chevron-down" style="margin-left: auto;"></i>' +
+                    '</div>' +
+                    '<div class="section-content">' +
+                        formatDetailedFindings(structured.detailedFindings) +
+                    '</div>' +
+                '</div>';
             
             document.getElementById('results').style.display = 'block';
             document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
