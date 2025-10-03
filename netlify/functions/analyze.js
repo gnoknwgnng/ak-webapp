@@ -1,7 +1,7 @@
 // Netlify serverless function
-import { WebsiteAnalyzer } from '../../src/analyzer.js';
+const { WebsiteAnalyzer } = require('../../src/analyzer.js');
 
-export const handler = async (event, context) => {
+exports.handler = async (event, context) => {
   // CORS headers
   const headers = {
     'Access-Control-Allow-Origin': '*',

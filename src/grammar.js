@@ -1,4 +1,4 @@
-export class GrammarChecker {
+class GrammarChecker {
   constructor(groqClient) {
     this.groq = groqClient;
   }
@@ -133,4 +133,5 @@ Respond only with valid JSON.`;
     
     return combined;
   }
-}
+}module.e
+xports = { GrammarChecker };

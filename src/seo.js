@@ -1,4 +1,4 @@
-export class SEOAnalyzer {
+class SEOAnalyzer {
     constructor(groqClient) {
         this.groq = groqClient;
     }
@@ -254,4 +254,5 @@ export class SEOAnalyzer {
         const stopWords = ['the', 'and', 'for', 'are', 'but', 'not', 'you', 'all', 'can', 'had', 'her', 'was', 'one', 'our', 'out', 'day', 'get', 'has', 'him', 'his', 'how', 'man', 'new', 'now', 'old', 'see', 'two', 'way', 'who', 'boy', 'did', 'its', 'let', 'put', 'say', 'she', 'too', 'use'];
         return stopWords.includes(word);
     }
-}
+}mod
+ule.exports = { SEOAnalyzer };
