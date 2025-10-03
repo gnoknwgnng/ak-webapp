@@ -1,16 +1,13 @@
 {
-  "name": "website-analyzer",
+  "name": "websight-pro",
   "version": "1.0.0",
-  "description": "Website analysis tool with grammar checking and SEO reporting",
-  "main": "index.js",
+  "description": "AI-powered website analyzer",
+  "type": "module",
   "scripts": {
-    "start": "node index.js",
-    "dev": "node --watch index.js",
-    "build": "echo 'Build complete'",
-    "vercel-build": "echo 'Vercel build complete'"
+    "build": "echo 'Build complete'"
   },
   "dependencies": {},
-  "keywords": ["website", "analysis", "seo", "grammar", "scraping"],
+  "keywords": ["website", "analysis", "seo"],
   "author": "",
   "license": "MIT"
 }
