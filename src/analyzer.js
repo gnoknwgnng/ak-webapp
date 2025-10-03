@@ -371,3 +371,5 @@ Be specific and include examples where possible.`;
 }
 modu
 le.exports = { WebsiteAnalyzer };
+module.
+exports = { WebsiteAnalyzer };

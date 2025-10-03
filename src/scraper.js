@@ -145,4 +145,5 @@ class WebScraper {
     }
   }
 }modul
-e.exports = { WebScraper };
+e.exports = { WebScraper };module.expo
+rts = { WebScraper };

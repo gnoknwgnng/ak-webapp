@@ -122,4 +122,5 @@ Format as JSON with structure:
     return combined;
   }
 }mo
-dule.exports = { GrammarChecker };
+dule.exports = { GrammarChecker };module.e
+xports = { GrammarChecker };
