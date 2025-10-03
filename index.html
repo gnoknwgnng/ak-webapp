@@ -486,7 +486,7 @@
                         <div style="font-size: 1.3rem; font-weight: 700; flex: 1; margin-left: 15px;">SEO Analysis</div>
                         <i class="fas fa-chevron-down" style="margin-left: auto;"></i>
                     </div>
-                    <div class="section-content" style="padding: 30px; display: none;">
+                    <div class="section-content active" style="padding: 30px; display: block;">
                         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
                             <div style="background: #f0f9ff; padding: 20px; border-radius: 12px;">
                                 <h4 style="color: #1e293b; margin: 0 0 15px 0;">On-Page SEO</h4>
@@ -604,17 +604,28 @@
         }
 
         function toggleSection(header) {
+            console.log('Toggle section clicked');
             const content = header.nextElementSibling;
             const chevron = header.querySelector('.fa-chevron-down, .fa-chevron-up');
             
+            console.log('Content element:', content);
+            console.log('Current display:', content.style.display);
+            console.log('Has active class:', content.classList.contains('active'));
+            
             if (content.classList.contains('active')) {
                 content.classList.remove('active');
-                chevron.classList.remove('fa-chevron-up');
-                chevron.classList.add('fa-chevron-down');
+                content.style.display = 'none';
+                if (chevron) {
+                    chevron.classList.remove('fa-chevron-up');
+                    chevron.classList.add('fa-chevron-down');
+                }
             } else {
                 content.classList.add('active');
-                chevron.classList.remove('fa-chevron-down');
-                chevron.classList.add('fa-chevron-up');
+                content.style.display = 'block';
+                if (chevron) {
+                    chevron.classList.remove('fa-chevron-down');
+                    chevron.classList.add('fa-chevron-up');
+                }
             }
         }
 
