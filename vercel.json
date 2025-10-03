@@ -3,17 +3,5 @@
     "api/analyze.js": {
       "maxDuration": 60
     }
-  },
-  "rewrites": [
-    {
-      "source": "/analyze",
-      "destination": "/api/analyze"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/",
-      "dest": "/index.html"
-    }
-  ]
+  }
 }
