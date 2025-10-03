@@ -355,11 +355,6 @@
         
         function displayResults(data) {
             console.log('Received data:', data);
-            console.log('Data type:', typeof data);
-            console.log('Has performanceMetrics:', !!data.performanceMetrics);
-            console.log('Has structuredReport:', !!data.structuredReport);
-            console.log('Has success:', !!data.success);
-            console.log('Has error:', !!data.error);
             
             // Check if this is an error response
             if (data.error) {
@@ -371,108 +366,17 @@
             
             const reportContent = document.getElementById('reportContent');
             
-            // Handle different response formats
-            let metrics, structured;
-            if (data.performanceMetrics && data.structuredReport) {
-                // New format - this is what we expect from the API
-                console.log('Using API data format');
-                console.log('Performance Metrics:', data.performanceMetrics);
-                console.log('Scraped Data:', data.scrapedData);
-                metrics = data.performanceMetrics;
-                structured = data.structuredReport;
-            } else if (data.performanceMetrics) {
-                // Direct format
-                console.log('Using direct format');
-                metrics = data.performanceMetrics;
-                structured = data;
-            } else {
-                // This should not happen if API is working correctly
-                console.warn('No performanceMetrics found, using fallback data');
-                console.log('Available keys:', Object.keys(data));
-                displayError('Analysis data format error. Please try again.');
-                return;
-            }
-            
-            const overallScore = metrics.overall || 0;
-            const seoScore = metrics.seo || 0;
-            const grammarScore = metrics.content || metrics.grammar || 0;
-            const performanceScore = metrics.technical || metrics.performance || 0;
-            
-            // Create the HTML using string concatenation
-            const dashboardHTML = 
-                '<!-- Performance Dashboard -->' +
-                '<div class="dashboard-grid">' +
-                    '<div class="metric-card" style="border-left: 4px solid #3b82f6;">' +
-                        '<div style="display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">' +
-                            '<i class="fas fa-search" style="font-size: 24px; color: #3b82f6; margin-right: 12px;"></i>' +
-                            '<h3 style="margin: 0; color: #1e293b;">SEO Score</h3>' +
-                        '</div>' +
-                        '<div class="metric-score" style="color: ' + getScoreColor(seoScore) + ';">' + seoScore + '/100</div>' +
-                        '<div style="color: #64748b; font-size: 0.9rem;">Search optimization level</div>' +
-                    '</div>' +
-                    
-                    '<div class="metric-card" style="border-left: 4px solid #f59e0b;">' +
-                        '<div style="display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">' +
-                            '<i class="fas fa-spell-check" style="font-size: 24px; color: #f59e0b; margin-right: 12px;"></i>' +
-                            '<h3 style="margin: 0; color: #1e293b;">Content Quality</h3>' +
-                        '</div>' +
-                        '<div class="metric-score" style="color: ' + getScoreColor(grammarScore) + ';">' + grammarScore + '/100</div>' +
-                        '<div style="color: #64748b; font-size: 0.9rem;">Grammar & readability</div>' +
-                    '</div>' +
-                    
-                    '<div class="metric-card" style="border-left: 4px solid #8b5cf6;">' +
-                        '<div style="display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">' +
-                            '<i class="fas fa-cogs" style="font-size: 24px; color: #8b5cf6; margin-right: 12px;"></i>' +
-                            '<h3 style="margin: 0; color: #1e293b;">Technical</h3>' +
-                        '</div>' +
-                        '<div class="metric-score" style="color: ' + getScoreColor(performanceScore) + ';">' + performanceScore + '/100</div>' +
-                        '<div style="color: #64748b; font-size: 0.9rem;">Technical performance</div>' +
-                    '</div>' +
-                    
-                    '<div class="metric-card" style="border-left: 4px solid #10b981;">' +
-                        '<div style="display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">' +
-                            '<i class="fas fa-chart-bar" style="font-size: 24px; color: #10b981; margin-right: 12px;"></i>' +
-                            '<h3 style="margin: 0; color: #1e293b;">Overall</h3>' +
-                        '</div>' +
-                        '<div class="metric-score" style="color: ' + getScoreColor(overallScore) + ';">' + overallScore + '/100</div>' +
-                        '<div style="color: #64748b; font-size: 0.9rem;">Website health</div>' +
-                    '</div>' +
-                '</div>';
-            
-            reportContent.innerHTML = dashboardHTML +
-                '<!-- Executive Summary -->' +
-                '<div class="report-section">' +
-                    '<div class="section-header" onclick="toggleSection(this)">' +
-                        '<i class="fas fa-chart-line"></i>' +
-                        '<div class="section-title">Executive Summary</div>' +
-                        '<i class="fas fa-chevron-down" style="margin-left: auto;"></i>' +
-                    '</div>' +
-                    '<div class="section-content active">' +
-                        formatExecutiveSummary(structured.executiveSummary, data) +
-                    '</div>' +
-                '</div>' +
-
-                '<!-- Technical Analysis -->' +
-                '<div class="report-section">' +
-                    '<div class="section-header" onclick="toggleSection(this)">' +
-                        '<i class="fas fa-cogs"></i>' +
-                        '<div class="section-title">Technical Analysis</div>' +
-                        '<i class="fas fa-chevron-down" style="margin-left: auto;"></i>' +
-                    '</div>' +
-                    '<div class="section-content">' +
-                        generateTechnicalAnalysisHTML(structured.technicalAnalysis) +
-                    '</div>' +
-                '</div>' +
-
-                '<!-- SEO Recommendations -->' +
-                '<div class="report-section">' +
-                    '<div class="section-header" onclick="toggleSection(this)">' +
-                        '<i class="fas fa-search-plus"></i>' +
-                        '<div class="section-title">SEO Optimization</div>' +
-                        '<i class="fas fa-chevron-down" style="margin-left: auto;"></i>' +
-                    '</div>' +
-                    '<div class="section-content">' +
-                        generateSEORecommendationsHTML(structured.seoRecommendations) +
+            // Display the raw API response directly on screen
+            reportContent.innerHTML = 
+                '<div style="background: white; padding: 30px; border-radius: 16px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">' +
+                    '<h2 style="color: #1e293b; margin-bottom: 20px; display: flex; align-items: center;">' +
+                        '<i class="fas fa-code" style="margin-right: 10px; color: #667eea;"></i>' +
+                        'Raw API Response' +
+                    '</h2>' +
+                    '<div style="background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 8px; padding: 20px; overflow-x: auto;">' +
+                        '<pre style="margin: 0; font-family: \'Courier New\', monospace; font-size: 13px; line-height: 1.5; color: #333; white-space: pre-wrap; word-wrap: break-word;">' +
+                        JSON.stringify(data, null, 2) +
+                        '</pre>' +
                     '</div>' +
                 '</div>';
             
