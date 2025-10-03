@@ -4,7 +4,7 @@ A comprehensive AI-powered website analysis tool that provides SEO audits, gramm
 
 ## 🚀 Live Demo
 
-Visit: [Your Vercel URL will be here]
+Visit: [Your Leap Cell URL will be here]
 
 ## ✨ Features
 
@@ -16,9 +16,9 @@ Visit: [Your Vercel URL will be here]
 ## 🛠️ Tech Stack
 
 - **Frontend**: HTML, CSS, JavaScript (Vanilla)
-- **Backend**: Node.js with Vercel Serverless Functions
-- **AI**: Groq API (GPT-OSS-20B model)
-- **Deployment**: Vercel
+- **Backend**: Node.js with Leap Cell Serverless Functions
+- **AI**: Groq API (Llama3-8b-8192 model)
+- **Deployment**: Leap Cell
 
 ## 📦 Installation
 
@@ -38,19 +38,35 @@ npm install
 npm start
 ```
 
-## 🚀 Deploy to Vercel
+## 🚀 Deploy to Leap Cell
 
-1. Install Vercel CLI:
+1. Install Leap CLI:
 ```bash
-npm i -g vercel
+npm i -g @leap/cli
 ```
 
-2. Deploy:
+2. Set your environment variables:
 ```bash
-vercel
+# Windows
+set GROQ_API_KEY=your-groq-api-key-here
+
+# Linux/Mac
+export GROQ_API_KEY=your-groq-api-key-here
 ```
 
-3. Follow the prompts and your app will be live!
+3. Deploy using the deployment script:
+```bash
+# Windows
+leap-deploy.bat
+
+# Linux/Mac
+./leap-deploy.sh
+```
+
+Or deploy manually:
+```bash
+leap deploy
+```
 
 ## 🔧 Configuration
 
@@ -62,18 +78,20 @@ Create a `.env` file in the root directory:
 GROQ_API_KEY=your-groq-api-key-here
 ```
 
-### For Vercel Deployment
+### For Leap Cell Deployment
 
-Add the environment variable in your Vercel dashboard:
-1. Go to your project settings
-2. Navigate to "Environment Variables"
-3. Add `GROQ_API_KEY` with your actual API key
+Add the environment variable using Leap CLI:
+```bash
+leap env set GROQ_API_KEY=your-groq-api-key-here
+```
+
+Or set it in your leap.yml configuration file.
 
 ## 📁 Project Structure
 
 ```
 ├── api/
-│   └── analyze.js          # Vercel serverless function
+│   └── analyze.js          # Leap Cell serverless function
 ├── src/
 │   ├── analyzer.js         # Main analysis engine
 │   ├── scraper.js          # Web scraping functionality
@@ -81,7 +99,10 @@ Add the environment variable in your Vercel dashboard:
 │   └── seo.js             # SEO analysis
 ├── public/
 │   └── index.html         # Frontend interface
-├── vercel.json            # Vercel configuration
+├── leap.yml               # Leap Cell configuration
+├── leap.config.js         # Leap Cell advanced configuration
+├── leap-deploy.sh         # Deployment script (Linux/Mac)
+├── leap-deploy.bat        # Deployment script (Windows)
 └── package.json
 ```
 

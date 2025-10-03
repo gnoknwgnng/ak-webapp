@@ -1,0 +1,46 @@
+# Leap Cell deployment configuration
+name: websight-pro
+runtime: nodejs18
+
+# Environment variables
+env:
+  NODE_ENV: production
+
+# Function definitions
+functions:
+  - name: analyze
+    handler: api/analyze.js
+    timeout: 60s
+    memory: 512MB
+    events:
+      - http:
+          path: /api/analyze
+          method: POST
+      - http:
+          path: /api/analyze
+          method: OPTIONS
+
+# Static file serving
+static:
+  - source: public
+    target: /
+  - source: index.html
+    target: /index.html
+
+# Build configuration
+build:
+  commands:
+    - npm install
+    - npm run build
+  
+# Health check
+healthCheck:
+  path: /
+  interval: 30s
+  timeout: 10s
+
+# Scaling configuration
+scaling:
+  minInstances: 0
+  maxInstances: 10
+  targetConcurrency: 100

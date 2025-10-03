@@ -105,6 +105,27 @@ export class WebsiteAnalyzer {
     return issues;
   }
 
+  calculateTechnicalScore(scrapedData) {
+    let score = 100;
+    
+    // Deduct points for missing elements
+    if (!scrapedData.title) score -= 20;
+    if (!scrapedData.metaDescription) score -= 15;
+    if (scrapedData.wordCount < 300) score -= 10;
+    
+    // Image optimization
+    const imagesWithoutAlt = scrapedData.images.filter(img => !img.hasAlt).length;
+    if (imagesWithoutAlt > 0) {
+      score -= Math.min(20, imagesWithoutAlt * 5);
+    }
+    
+    // Heading structure
+    const h1Count = scrapedData.headings.filter(h => h.level === 1).length;
+    if (h1Count !== 1) score -= 10;
+    
+    return Math.max(0, Math.min(100, score));
+  }
+
   async generateStructuredReport(data) {
     try {
       return {

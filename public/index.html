@@ -311,7 +311,12 @@ cript>
             
             try {
                 const startTime = Date.now();
-                const response = await fetch('/api/analyze', {
+                // Determine the API endpoint based on environment
+                const apiEndpoint = window.location.hostname.includes('leap') 
+                    ? '/api/analyze'  // Leap Cell endpoint
+                    : '/api/analyze'; // Local development
+                
+                const response = await fetch(apiEndpoint, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
