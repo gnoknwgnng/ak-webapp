@@ -1,9 +1,9 @@
-import { Groq } from 'groq-sdk';
-import { WebScraper } from './scraper.js';
-import { SEOAnalyzer } from './seo.js';
-import { GrammarChecker } from './grammar.js';
+const { Groq } = require('groq-sdk');
+const { WebScraper } = require('./scraper.js');
+const { SEOAnalyzer } = require('./seo.js');
+const { GrammarChecker } = require('./grammar.js');
 
-export class WebsiteAnalyzer {
+class WebsiteAnalyzer {
   constructor() {
     this.groq = new Groq({
       apiKey: process.env.GROQ_API_KEY || 'your-groq-api-key-here'
@@ -369,3 +369,5 @@ Be specific and include examples where possible.`;
     return completion.choices[0]?.message?.content || 'Detailed findings generation failed';
   }
 }
+modu
+le.exports = { WebsiteAnalyzer };

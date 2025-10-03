@@ -1,7 +1,7 @@
-import axios from 'axios';
-import * as cheerio from 'cheerio';
+const axios = require('axios');
+const cheerio = require('cheerio');
 
-export class WebScraper {
+class WebScraper {
   constructor() {
     this.axiosConfig = {
       timeout: 30000,
@@ -144,4 +144,5 @@ export class WebScraper {
       return false;
     }
   }
-}
+}modul
+e.exports = { WebScraper };

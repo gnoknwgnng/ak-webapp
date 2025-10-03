@@ -1,4 +1,4 @@
-export class SEOAnalyzer {
+class SEOAnalyzer {
   constructor(groqClient) {
     this.groq = groqClient;
   }
@@ -220,4 +220,5 @@ Return as JSON array of objects:
     
     return Math.round((score / maxScore) * 100);
   }
-}
+}module.ex
+ports = { SEOAnalyzer };

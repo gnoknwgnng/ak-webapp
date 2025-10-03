@@ -1,4 +1,4 @@
-export class GrammarChecker {
+class GrammarChecker {
   constructor(groqClient) {
     this.groq = groqClient;
   }
@@ -121,4 +121,5 @@ Format as JSON with structure:
     
     return combined;
   }
-}
+}mo
+dule.exports = { GrammarChecker };
