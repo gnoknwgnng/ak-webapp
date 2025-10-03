@@ -330,7 +330,7 @@ cript>
                 
                 console.log('Received data:', data);
                 
-                if (data.success) {
+                if (data.success || data.performanceMetrics) {
                     window.lastAnalysisTime = analysisTime;
                     displayResults(data);
                 } else {

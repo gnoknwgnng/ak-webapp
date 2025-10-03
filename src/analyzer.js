@@ -41,7 +41,13 @@ export class WebsiteAnalyzer {
         url
       });
 
-      return structuredReport;
+      return {
+        success: true,
+        url: url,
+        scrapedData: scrapedData,
+        performanceMetrics: performanceMetrics,
+        structuredReport: structuredReport
+      };
 
     } catch (error) {
       console.error('Error during website analysis:', error.message);
