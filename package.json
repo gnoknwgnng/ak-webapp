@@ -5,9 +5,9 @@
 
   "type": "module",
   "scripts": {
-    "start": "node index.js",
+    "start": "echo 'Serverless deployment - functions handle requests'",
     "dev": "node --watch index.js",
-    "build": "echo 'Build completed for Leap Cell deployment'",
+    "build": "echo 'Build completed for Leap Cell serverless deployment'",
     "leap:deploy": "leap deploy",
     "leap:dev": "leap dev"
   },

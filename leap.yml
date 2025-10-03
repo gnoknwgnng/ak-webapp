@@ -1,4 +1,4 @@
-# Leap Cell deployment configuration
+# Leap Cell serverless deployment configuration
 name: websight-pro
 runtime: nodejs20
 
@@ -13,12 +13,12 @@ static:
   - source: index.html
     target: /index.html
 
-# Function definitions
+# Serverless function for API
 functions:
   - name: analyze
-    handler: api/analyze.js
+    handler: serverless.js
     timeout: 60s
-    memory: 512MB
+    memory: 256MB
     events:
       - http:
           path: /api/analyze
@@ -31,9 +31,3 @@ functions:
 build:
   commands:
     - npm install
-  
-# Scaling configuration
-scaling:
-  minInstances: 0
-  maxInstances: 10
-  targetConcurrency: 100
