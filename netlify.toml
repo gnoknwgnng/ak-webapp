@@ -6,17 +6,37 @@
 [build.environment]
   NODE_VERSION = "18"
 
+# Redirect API calls to Netlify functions
 [[redirects]]
-  from = "/api/*"
-  to = "/.netlify/functions/:splat"
+  from = "/api/analyze"
+  to = "/.netlify/functions/analyze"
+  status = 200
+
+[[redirects]]
+  from = "/analyze"
+  to = "/.netlify/functions/analyze"
+  status = 200
+
+# SPA fallback
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
   status = 200
 
 [functions]
   node_bundler = "esbuild"
 
+# Headers for CORS
 [[headers]]
-  for = "/api/*"
+  for = "/.netlify/functions/*"
   [headers.values]
     Access-Control-Allow-Origin = "*"
     Access-Control-Allow-Methods = "GET, POST, OPTIONS"
     Access-Control-Allow-Headers = "Content-Type"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"

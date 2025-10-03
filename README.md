@@ -4,7 +4,7 @@ A comprehensive AI-powered website analysis tool that provides SEO audits, gramm
 
 ## 🚀 Live Demo
 
-Visit: [Your Leap Cell URL will be here]
+Visit: [Your Netlify URL will be here]
 
 ## ✨ Features
 
@@ -16,9 +16,9 @@ Visit: [Your Leap Cell URL will be here]
 ## 🛠️ Tech Stack
 
 - **Frontend**: HTML, CSS, JavaScript (Vanilla)
-- **Backend**: Node.js with Leap Cell Serverless Functions
+- **Backend**: Netlify Serverless Functions
 - **AI**: Groq API (Llama3-8b-8192 model)
-- **Deployment**: Leap Cell
+- **Deployment**: Netlify (JAMstack)
 
 ## 📦 Installation
 
@@ -38,34 +38,38 @@ npm install
 npm start
 ```
 
-## 🚀 Deploy to Leap Cell
+## 🚀 Deploy to Netlify (Recommended - FREE!)
 
-1. Install Leap CLI:
+### Option 1: One-Click Deploy
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/gnoknwgnng/ak-webapp)
+
+### Option 2: Manual Deploy
+1. Fork this repository
+2. Go to [netlify.com](https://netlify.com) and sign up
+3. Click "New site from Git"
+4. Choose your forked repository
+5. Set build settings:
+   ```
+   Build command: npm run build
+   Publish directory: public
+   ```
+6. Add environment variables:
+   ```
+   GROQ_API_KEY=your-groq-api-key-here
+   NODE_ENV=production
+   ```
+7. Deploy!
+
+### Option 3: Netlify CLI
 ```bash
-npm i -g @leap/cli
-```
+# Install Netlify CLI
+npm install -g netlify-cli
 
-2. Set your environment variables:
-```bash
-# Windows
-set GROQ_API_KEY=your-groq-api-key-here
+# Login to Netlify
+netlify login
 
-# Linux/Mac
-export GROQ_API_KEY=your-groq-api-key-here
-```
-
-3. Deploy using the deployment script:
-```bash
-# Windows
-leap-deploy.bat
-
-# Linux/Mac
-./leap-deploy.sh
-```
-
-Or deploy manually:
-```bash
-leap deploy
+# Deploy
+netlify deploy --prod
 ```
 
 ## 🔧 Configuration
@@ -78,20 +82,25 @@ Create a `.env` file in the root directory:
 GROQ_API_KEY=your-groq-api-key-here
 ```
 
-### For Leap Cell Deployment
+### For Netlify Deployment
 
-Add the environment variable using Leap CLI:
+Add environment variables in Netlify dashboard:
+1. Go to Site settings → Environment variables
+2. Add `GROQ_API_KEY` with your actual API key
+3. Add `NODE_ENV` with value `production`
+
+Or use Netlify CLI:
 ```bash
-leap env set GROQ_API_KEY=your-groq-api-key-here
+netlify env:set GROQ_API_KEY your-groq-api-key-here
+netlify env:set NODE_ENV production
 ```
-
-Or set it in your leap.yml configuration file.
 
 ## 📁 Project Structure
 
 ```
-├── api/
-│   └── analyze.js          # Leap Cell serverless function
+├── netlify/
+│   └── functions/
+│       └── analyze.js      # Netlify serverless function
 ├── src/
 │   ├── analyzer.js         # Main analysis engine
 │   ├── scraper.js          # Web scraping functionality
@@ -99,10 +108,8 @@ Or set it in your leap.yml configuration file.
 │   └── seo.js             # SEO analysis
 ├── public/
 │   └── index.html         # Frontend interface
-├── leap.yml               # Leap Cell configuration
-├── leap.config.js         # Leap Cell advanced configuration
-├── leap-deploy.sh         # Deployment script (Linux/Mac)
-├── leap-deploy.bat        # Deployment script (Windows)
+├── netlify.toml           # Netlify configuration
+├── index.html             # Main HTML file
 └── package.json
 ```
 

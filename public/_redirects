@@ -1,0 +1,8 @@
+# Netlify redirects for WebSight Pro
+
+# API redirects to Netlify functions
+/api/analyze /.netlify/functions/analyze 200
+/analyze /.netlify/functions/analyze 200
+
+# SPA fallback - serve index.html for all routes
+/* /index.html 200
