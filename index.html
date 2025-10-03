@@ -328,21 +328,21 @@
                     body: JSON.stringify({ url })
                 });
                 
+                console.log('Response status:', response.status);
+                console.log('Response ok:', response.ok);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
                 const data = await response.json();
                 const analysisTime = ((Date.now() - startTime) / 1000).toFixed(1);
                 
-                console.log('Received data:', data);
+                console.log('Raw response data:', data);
+                console.log('Response keys:', Object.keys(data));
                 
-                if (data.success || data.performanceMetrics || data.executiveSummary) {
-                    window.lastAnalysisTime = analysisTime;
-                    displayResults(data);
-                } else if (data.error) {
-                    displayError(data.error);
-                } else {
-                    // Try to display anyway - might be a different format
-                    console.log('Attempting to display data anyway:', data);
-                    displayResults(data);
-                }
+                window.lastAnalysisTime = analysisTime;
+                displayResults(data);
                 
             } catch (error) {
                 console.error('Analysis error:', error);
@@ -355,6 +355,17 @@
         
         function displayResults(data) {
             console.log('Received data:', data);
+            console.log('Data type:', typeof data);
+            console.log('Has performanceMetrics:', !!data.performanceMetrics);
+            console.log('Has structuredReport:', !!data.structuredReport);
+            console.log('Has success:', !!data.success);
+            console.log('Has error:', !!data.error);
+            
+            // Check if this is an error response
+            if (data.error) {
+                displayError(data.error + (data.details ? ': ' + data.details : ''));
+                return;
+            }
             
             document.getElementById('analysisUrl').textContent = `Analysis for: ${data.url || 'Unknown'}`;
             
@@ -363,22 +374,21 @@
             // Handle different response formats
             let metrics, structured;
             if (data.performanceMetrics && data.structuredReport) {
-                // New format
+                // New format - this is what we expect from the API
+                console.log('Using API data format');
                 metrics = data.performanceMetrics;
                 structured = data.structuredReport;
             } else if (data.performanceMetrics) {
                 // Direct format
+                console.log('Using direct format');
                 metrics = data.performanceMetrics;
                 structured = data;
             } else {
-                // Fallback - create default metrics
-                metrics = {
-                    overall: 75,
-                    seo: 70,
-                    content: 80,
-                    technical: 75
-                };
-                structured = data;
+                // This should not happen if API is working correctly
+                console.warn('No performanceMetrics found, using fallback data');
+                console.log('Available keys:', Object.keys(data));
+                displayError('Analysis data format error. Please try again.');
+                return;
             }
             
             const overallScore = metrics.overall || 0;
