@@ -133,5 +133,6 @@ Respond only with valid JSON.`;
     
     return combined;
   }
-}module.e
-xports = { GrammarChecker };
+}
+
+module.exports = { GrammarChecker };

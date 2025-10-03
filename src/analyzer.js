@@ -371,5 +371,5 @@ class WebsiteAnalyzer {
     }
   }
 }
-module.ex
-ports = { WebsiteAnalyzer };
+
+module.exports = { WebsiteAnalyzer };

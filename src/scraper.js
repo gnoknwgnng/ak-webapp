@@ -140,5 +140,5 @@ class WebScraper {
     }
   }
 }
-module.exp
-orts = { WebScraper };
+
+module.exports = { WebScraper };
