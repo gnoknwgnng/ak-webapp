@@ -371,6 +371,16 @@
             const scraped = data.scrapedData || {};
             const structured = data.structuredReport || {};
             
+            // Debug: Log the metrics to see what we're getting
+            console.log('Metrics object:', metrics);
+            console.log('Metrics keys:', Object.keys(metrics));
+            console.log('Individual scores:', {
+                overall: metrics.overall,
+                seo: metrics.seo,
+                content: metrics.content,
+                technical: metrics.technical
+            });
+            
             // Build comprehensive display
             reportContent.innerHTML = buildDashboard(metrics) + 
                                     buildWebsiteOverview(scraped) +
@@ -386,10 +396,14 @@
         }
 
         function buildDashboard(metrics) {
+            console.log('buildDashboard received metrics:', metrics);
+            
             const overallScore = metrics.overall || 0;
             const seoScore = metrics.seo || 0;
             const contentScore = metrics.content || 0;
             const technicalScore = metrics.technical || 0;
+            
+            console.log('Extracted scores:', { overallScore, seoScore, contentScore, technicalScore });
             
             return `
                 <div class="dashboard-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px;">
