@@ -5,7 +5,7 @@
 
   "type": "module",
   "scripts": {
-    "start": "node index.js",
+    "start": "echo 'Leap Cell serverless deployment - no start command needed'",
     "dev": "node --watch index.js",
     "build": "echo 'Build completed for Leap Cell deployment'",
     "leap:deploy": "leap deploy",
