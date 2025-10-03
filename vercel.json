@@ -9,5 +9,11 @@
       "source": "/analyze",
       "destination": "/api/analyze"
     }
+  ],
+  "routes": [
+    {
+      "src": "/",
+      "dest": "/index.html"
+    }
   ]
 }
