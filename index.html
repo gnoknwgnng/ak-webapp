@@ -376,6 +376,8 @@
             if (data.performanceMetrics && data.structuredReport) {
                 // New format - this is what we expect from the API
                 console.log('Using API data format');
+                console.log('Performance Metrics:', data.performanceMetrics);
+                console.log('Scraped Data:', data.scrapedData);
                 metrics = data.performanceMetrics;
                 structured = data.structuredReport;
             } else if (data.performanceMetrics) {
@@ -485,10 +487,13 @@
         }
 
         function formatExecutiveSummary(summary, data) {
+            console.log('Formatting executive summary with data:', data);
             const title = (data.scrapedData && data.scrapedData.title) ? data.scrapedData.title : 'Missing';
             const wordCount = (data.scrapedData && data.scrapedData.wordCount) ? data.scrapedData.wordCount : 0;
             const imageCount = (data.scrapedData && data.scrapedData.images) ? data.scrapedData.images.length : 0;
             const linkCount = (data.scrapedData && data.scrapedData.links) ? data.scrapedData.links.length : 0;
+            
+            console.log('Extracted values:', { title, wordCount, imageCount, linkCount });
             
             return '<div style="background: #f8fafc; padding: 20px; border-radius: 12px; border-left: 4px solid #667eea; margin-bottom: 20px;">' +
                 '<h4 style="color: #1e293b; margin-bottom: 15px;">Website Overview</h4>' +
