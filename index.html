@@ -366,22 +366,190 @@
             
             const reportContent = document.getElementById('reportContent');
             
-            // Display the raw API response directly on screen
-            reportContent.innerHTML = 
-                '<div style="background: white; padding: 30px; border-radius: 16px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">' +
-                    '<h2 style="color: #1e293b; margin-bottom: 20px; display: flex; align-items: center;">' +
-                        '<i class="fas fa-code" style="margin-right: 10px; color: #667eea;"></i>' +
-                        'Raw API Response' +
-                    '</h2>' +
-                    '<div style="background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 8px; padding: 20px; overflow-x: auto;">' +
-                        '<pre style="margin: 0; font-family: \'Courier New\', monospace; font-size: 13px; line-height: 1.5; color: #333; white-space: pre-wrap; word-wrap: break-word;">' +
-                        JSON.stringify(data, null, 2) +
-                        '</pre>' +
-                    '</div>' +
-                '</div>';
+            // Extract data from API response
+            const metrics = data.performanceMetrics || {};
+            const scraped = data.scrapedData || {};
+            const structured = data.structuredReport || {};
+            
+            // Build comprehensive display
+            reportContent.innerHTML = buildDashboard(metrics) + 
+                                    buildWebsiteOverview(scraped) +
+                                    buildSEOAnalysis(structured.seoRecommendations) +
+                                    buildTechnicalAnalysis(structured.technicalAnalysis) +
+                                    buildContentAnalysis(structured.contentAnalysis) +
+                                    buildActionPlan(structured.actionPlan) +
+                                    buildKeywordAnalysis(structured.seoRecommendations?.contentSEO) +
+                                    buildRawDataSection(data);
             
             document.getElementById('results').style.display = 'block';
             document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function buildDashboard(metrics) {
+            const overallScore = metrics.overall || 0;
+            const seoScore = metrics.seo || 0;
+            const contentScore = metrics.content || 0;
+            const technicalScore = metrics.technical || 0;
+            
+            return `
+                <div class="dashboard-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px;">
+                    <div class="metric-card" style="background: white; padding: 25px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); text-align: center; border-left: 4px solid #3b82f6;">
+                        <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">
+                            <i class="fas fa-search" style="font-size: 24px; color: #3b82f6; margin-right: 12px;"></i>
+                            <h3 style="margin: 0; color: #1e293b;">SEO Score</h3>
+                        </div>
+                        <div style="font-size: 2.5rem; font-weight: bold; margin: 15px 0 8px 0; color: ${getScoreColor(seoScore)};">${seoScore}/100</div>
+                        <div style="color: #64748b; font-size: 0.9rem;">Search optimization level</div>
+                    </div>
+                    
+                    <div class="metric-card" style="background: white; padding: 25px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); text-align: center; border-left: 4px solid #f59e0b;">
+                        <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">
+                            <i class="fas fa-spell-check" style="font-size: 24px; color: #f59e0b; margin-right: 12px;"></i>
+                            <h3 style="margin: 0; color: #1e293b;">Content Quality</h3>
+                        </div>
+                        <div style="font-size: 2.5rem; font-weight: bold; margin: 15px 0 8px 0; color: ${getScoreColor(contentScore)};">${contentScore}/100</div>
+                        <div style="color: #64748b; font-size: 0.9rem;">Grammar & readability</div>
+                    </div>
+                    
+                    <div class="metric-card" style="background: white; padding: 25px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); text-align: center; border-left: 4px solid #8b5cf6;">
+                        <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">
+                            <i class="fas fa-cogs" style="font-size: 24px; color: #8b5cf6; margin-right: 12px;"></i>
+                            <h3 style="margin: 0; color: #1e293b;">Technical</h3>
+                        </div>
+                        <div style="font-size: 2.5rem; font-weight: bold; margin: 15px 0 8px 0; color: ${getScoreColor(technicalScore)};">${technicalScore}/100</div>
+                        <div style="color: #64748b; font-size: 0.9rem;">Technical performance</div>
+                    </div>
+                    
+                    <div class="metric-card" style="background: white; padding: 25px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); text-align: center; border-left: 4px solid #10b981;">
+                        <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">
+                            <i class="fas fa-chart-bar" style="font-size: 24px; color: #10b981; margin-right: 12px;"></i>
+                            <h3 style="margin: 0; color: #1e293b;">Overall</h3>
+                        </div>
+                        <div style="font-size: 2.5rem; font-weight: bold; margin: 15px 0 8px 0; color: ${getScoreColor(overallScore)};">${overallScore}/100</div>
+                        <div style="color: #64748b; font-size: 0.9rem;">Website health</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function buildWebsiteOverview(scraped) {
+            return `
+                <div class="report-section" style="background: white; border-radius: 20px; margin-bottom: 20px; box-shadow: 0 8px 25px rgba(0,0,0,0.08); overflow: hidden;">
+                    <div class="section-header" onclick="toggleSection(this)" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 25px 30px; display: flex; align-items: center; cursor: pointer;">
+                        <i class="fas fa-globe"></i>
+                        <div style="font-size: 1.3rem; font-weight: 700; flex: 1; margin-left: 15px;">Website Overview</div>
+                        <i class="fas fa-chevron-down" style="margin-left: auto;"></i>
+                    </div>
+                    <div class="section-content active" style="padding: 30px; display: block;">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 20px;">
+                            <div style="background: #f8fafc; padding: 20px; border-radius: 12px; border-left: 4px solid #3b82f6;">
+                                <h4 style="color: #1e293b; margin: 0 0 10px 0;">Page Title</h4>
+                                <p style="margin: 0; color: #374151; font-weight: 500;">${scraped.title || 'Not found'}</p>
+                            </div>
+                            <div style="background: #f8fafc; padding: 20px; border-radius: 12px; border-left: 4px solid #f59e0b;">
+                                <h4 style="color: #1e293b; margin: 0 0 10px 0;">Word Count</h4>
+                                <p style="margin: 0; color: #374151; font-weight: 500; font-size: 1.2rem;">${scraped.wordCount || 0} words</p>
+                            </div>
+                            <div style="background: #f8fafc; padding: 20px; border-radius: 12px; border-left: 4px solid #8b5cf6;">
+                                <h4 style="color: #1e293b; margin: 0 0 10px 0;">Images</h4>
+                                <p style="margin: 0; color: #374151; font-weight: 500; font-size: 1.2rem;">${scraped.images?.length || 0} images</p>
+                            </div>
+                            <div style="background: #f8fafc; padding: 20px; border-radius: 12px; border-left: 4px solid #10b981;">
+                                <h4 style="color: #1e293b; margin: 0 0 10px 0;">Links</h4>
+                                <p style="margin: 0; color: #374151; font-weight: 500; font-size: 1.2rem;">${scraped.links?.length || 0} links</p>
+                            </div>
+                        </div>
+                        ${scraped.metaDescription ? 
+                            `<div style="background: #f0f9ff; padding: 20px; border-radius: 12px; border-left: 4px solid #3b82f6;">
+                                <h4 style="color: #1e293b; margin: 0 0 10px 0;">Meta Description</h4>
+                                <p style="margin: 0; color: #374151;">${scraped.metaDescription}</p>
+                            </div>` : 
+                            `<div style="background: #fef2f2; padding: 20px; border-radius: 12px; border-left: 4px solid #ef4444;">
+                                <h4 style="color: #1e293b; margin: 0 0 10px 0;">⚠️ Missing Meta Description</h4>
+                                <p style="margin: 0; color: #374151;">No meta description found. This is important for SEO.</p>
+                            </div>`
+                        }
+                    </div>
+                </div>
+            `;
+        }
+
+        function buildSEOAnalysis(seoData) {
+            const onPage = seoData?.onPageSEO || {};
+            const contentSEO = seoData?.contentSEO || {};
+            const technicalSEO = seoData?.technicalSEO || {};
+            
+            return `
+                <div class="report-section" style="background: white; border-radius: 20px; margin-bottom: 20px; box-shadow: 0 8px 25px rgba(0,0,0,0.08); overflow: hidden;">
+                    <div class="section-header" onclick="toggleSection(this)" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 25px 30px; display: flex; align-items: center; cursor: pointer;">
+                        <i class="fas fa-search-plus"></i>
+                        <div style="font-size: 1.3rem; font-weight: 700; flex: 1; margin-left: 15px;">SEO Analysis</div>
+                        <i class="fas fa-chevron-down" style="margin-left: auto;"></i>
+                    </div>
+                    <div class="section-content" style="padding: 30px; display: none;">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                            <div style="background: #f0f9ff; padding: 20px; border-radius: 12px;">
+                                <h4 style="color: #1e293b; margin: 0 0 15px 0;">On-Page SEO</h4>
+                                <div style="margin-bottom: 10px;">
+                                    <strong>Score:</strong> <span style="color: ${getScoreColor(onPage.score || 0)};">${onPage.score || 0}/100</span>
+                                </div>
+                                <div style="margin-bottom: 10px;">
+                                    <strong>Title Length:</strong> ${onPage.titleAnalysis?.length || 0} characters
+                                    ${onPage.titleAnalysis?.optimal ? ' ✅' : ' ⚠️'}
+                                </div>
+                                <div style="margin-bottom: 10px;">
+                                    <strong>H1 Tags:</strong> ${onPage.headingAnalysis?.h1Count || 0}
+                                    ${onPage.headingAnalysis?.h1Count === 1 ? ' ✅' : ' ⚠️'}
+                                </div>
+                                <div>
+                                    <strong>Total Headings:</strong> ${onPage.headingAnalysis?.totalHeadings || 0}
+                                </div>
+                            </div>
+                            
+                            <div style="background: #f0fdf4; padding: 20px; border-radius: 12px;">
+                                <h4 style="color: #1e293b; margin: 0 0 15px 0;">Content SEO</h4>
+                                <div style="margin-bottom: 10px;">
+                                    <strong>Score:</strong> <span style="color: ${getScoreColor(contentSEO.score || 0)};">${contentSEO.score || 0}/100</span>
+                                </div>
+                                <div style="margin-bottom: 10px;">
+                                    <strong>Readability:</strong> <span style="color: ${getScoreColor(contentSEO.readability * 10 || 0)};">${contentSEO.readability || 0}/10</span>
+                                </div>
+                                <div style="margin-bottom: 10px;">
+                                    <strong>Content Quality:</strong> <span style="color: ${getScoreColor(contentSEO.contentQuality * 10 || 0)};">${contentSEO.contentQuality || 0}/10</span>
+                                </div>
+                                <div>
+                                    <strong>Word Count:</strong> ${contentSEO.wordCount || 0} words
+                                </div>
+                            </div>
+                            
+                            <div style="background: #fef3c7; padding: 20px; border-radius: 12px;">
+                                <h4 style="color: #1e293b; margin: 0 0 15px 0;">Technical SEO</h4>
+                                <div style="margin-bottom: 10px;">
+                                    <strong>Score:</strong> <span style="color: ${getScoreColor(technicalSEO.score || 0)};">${technicalSEO.score || 0}/100</span>
+                                </div>
+                                <div style="margin-bottom: 10px;">
+                                    <strong>Internal Links:</strong> ${technicalSEO.internalLinks || 0}
+                                </div>
+                                <div style="margin-bottom: 10px;">
+                                    <strong>External Links:</strong> ${technicalSEO.externalLinks || 0}
+                                </div>
+                                <div>
+                                    <strong>Image Alt Coverage:</strong> ${technicalSEO.imageOptimization?.altTextCoverage || 0}%
+                                </div>
+                            </div>
+                        </div>
+                        
+                        ${onPage.issues?.length > 0 ? `
+                            <div style="background: #fef2f2; padding: 20px; border-radius: 12px; margin-top: 20px; border-left: 4px solid #ef4444;">
+                                <h4 style="color: #1e293b; margin: 0 0 15px 0;">⚠️ SEO Issues Found</h4>
+                                <ul style="margin: 0; padding-left: 20px;">
+                                    ${onPage.issues.map(issue => `<li style="color: #374151; margin-bottom: 5px;">${issue}</li>`).join('')}
+                                </ul>
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
         }
         
         function getScoreColor(score) {
@@ -464,4 +632,235 @@
         }
     </script>
 </body>
-</html>
+</html>   
+     function buildTechnicalAnalysis(techData) {
+            if (!techData) return '';
+            
+            return `
+                <div class="report-section" style="background: white; border-radius: 20px; margin-bottom: 20px; box-shadow: 0 8px 25px rgba(0,0,0,0.08); overflow: hidden;">
+                    <div class="section-header" onclick="toggleSection(this)" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 25px 30px; display: flex; align-items: center; cursor: pointer;">
+                        <i class="fas fa-cogs"></i>
+                        <div style="font-size: 1.3rem; font-weight: 700; flex: 1; margin-left: 15px;">Technical Analysis</div>
+                        <i class="fas fa-chevron-down" style="margin-left: auto;"></i>
+                    </div>
+                    <div class="section-content" style="padding: 30px; display: none;">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 20px;">
+                            <div style="background: #f0f9ff; padding: 20px; border-radius: 12px;">
+                                <h4 style="color: #1e293b; margin: 0 0 15px 0;">HTML Structure</h4>
+                                <div style="margin-bottom: 10px;">
+                                    <strong>Score:</strong> <span style="color: ${getScoreColor(techData.htmlStructure?.score || 0)};">${techData.htmlStructure?.score || 0}/100</span>
+                                </div>
+                                <div>
+                                    <strong>Issues Found:</strong> ${techData.htmlStructure?.issues || 0}
+                                </div>
+                            </div>
+                            
+                            <div style="background: #f0fdf4; padding: 20px; border-radius: 12px;">
+                                <h4 style="color: #1e293b; margin: 0 0 15px 0;">Page Speed</h4>
+                                <div style="margin-bottom: 10px;">
+                                    <strong>Score:</strong> <span style="color: ${getScoreColor(techData.pageSpeed?.score || 0)};">${techData.pageSpeed?.score || 0}/100</span>
+                                </div>
+                                <div>
+                                    <strong>Load Time:</strong> ${techData.pageSpeed?.loadTime || 'Unknown'}
+                                </div>
+                            </div>
+                            
+                            <div style="background: #fef3c7; padding: 20px; border-radius: 12px;">
+                                <h4 style="color: #1e293b; margin: 0 0 15px 0;">Mobile Optimization</h4>
+                                <div style="margin-bottom: 10px;">
+                                    <strong>Score:</strong> <span style="color: ${getScoreColor(techData.mobileOptimization?.score || 0)};">${techData.mobileOptimization?.score || 0}/100</span>
+                                </div>
+                                <div>
+                                    <strong>Responsive:</strong> ${techData.mobileOptimization?.responsive ? '✅ Yes' : '❌ No'}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        ${techData.issues?.length > 0 ? `
+                            <div style="background: #fef2f2; padding: 20px; border-radius: 12px; border-left: 4px solid #ef4444;">
+                                <h4 style="color: #1e293b; margin: 0 0 15px 0;">🔧 Technical Issues</h4>
+                                ${techData.issues.map(issue => `
+                                    <div style="margin-bottom: 15px; padding: 15px; background: white; border-radius: 8px;">
+                                        <div style="font-weight: 600; color: #ef4444; margin-bottom: 5px;">
+                                            ${issue.type?.toUpperCase()} PRIORITY: ${issue.issue}
+                                        </div>
+                                        <div style="color: #374151; font-size: 0.9rem;">
+                                            Impact: ${issue.impact}
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        ` : ''}
+                        
+                        ${techData.recommendations?.length > 0 ? `
+                            <div style="background: #f0f9ff; padding: 20px; border-radius: 12px; margin-top: 20px; border-left: 4px solid #3b82f6;">
+                                <h4 style="color: #1e293b; margin: 0 0 15px 0;">💡 Recommendations</h4>
+                                <ul style="margin: 0; padding-left: 20px;">
+                                    ${techData.recommendations.map(rec => `<li style="color: #374151; margin-bottom: 8px;">${rec}</li>`).join('')}
+                                </ul>
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+        }
+
+        function buildContentAnalysis(contentData) {
+            if (!contentData) return '';
+            
+            const readability = contentData.readability || {};
+            const quality = contentData.contentQuality || {};
+            
+            return `
+                <div class="report-section" style="background: white; border-radius: 20px; margin-bottom: 20px; box-shadow: 0 8px 25px rgba(0,0,0,0.08); overflow: hidden;">
+                    <div class="section-header" onclick="toggleSection(this)" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 25px 30px; display: flex; align-items: center; cursor: pointer;">
+                        <i class="fas fa-file-alt"></i>
+                        <div style="font-size: 1.3rem; font-weight: 700; flex: 1; margin-left: 15px;">Content Analysis</div>
+                        <i class="fas fa-chevron-down" style="margin-left: auto;"></i>
+                    </div>
+                    <div class="section-content" style="padding: 30px; display: none;">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                            <div style="background: #f0f9ff; padding: 20px; border-radius: 12px;">
+                                <h4 style="color: #1e293b; margin: 0 0 15px 0;">Readability</h4>
+                                <div style="margin-bottom: 10px;">
+                                    <strong>Score:</strong> <span style="color: ${getScoreColor(readability.score || 0)};">${readability.score || 0}/100</span>
+                                </div>
+                                <div style="margin-bottom: 10px;">
+                                    <strong>Level:</strong> ${readability.level || 'Unknown'}
+                                </div>
+                                <div>
+                                    <strong>Errors:</strong> ${readability.errors?.length || 0}
+                                </div>
+                            </div>
+                            
+                            <div style="background: #f0fdf4; padding: 20px; border-radius: 12px;">
+                                <h4 style="color: #1e293b; margin: 0 0 15px 0;">Content Quality</h4>
+                                <div style="margin-bottom: 10px;">
+                                    <strong>Word Count:</strong> ${quality.wordCount || 0}
+                                </div>
+                                <div style="margin-bottom: 10px;">
+                                    <strong>Uniqueness:</strong> ${quality.uniqueness || 0}%
+                                </div>
+                                <div style="margin-bottom: 10px;">
+                                    <strong>Engagement:</strong> ${quality.engagement || 0}%
+                                </div>
+                                <div>
+                                    <strong>Reading Time:</strong> ~${quality.estimatedReadingTime || 0} min
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function buildActionPlan(actionData) {
+            if (!actionData) return '';
+            
+            return `
+                <div class="report-section" style="background: white; border-radius: 20px; margin-bottom: 20px; box-shadow: 0 8px 25px rgba(0,0,0,0.08); overflow: hidden;">
+                    <div class="section-header" onclick="toggleSection(this)" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 25px 30px; display: flex; align-items: center; cursor: pointer;">
+                        <i class="fas fa-tasks"></i>
+                        <div style="font-size: 1.3rem; font-weight: 700; flex: 1; margin-left: 15px;">Priority Action Plan</div>
+                        <i class="fas fa-chevron-down" style="margin-left: auto;"></i>
+                    </div>
+                    <div class="section-content" style="padding: 30px; display: none;">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 20px;">
+                            ${actionData.highPriority?.length > 0 ? `
+                                <div style="background: #fef2f2; padding: 20px; border-radius: 12px; border-left: 4px solid #ef4444;">
+                                    <h4 style="color: #ef4444; margin: 0 0 15px 0;">🔴 High Priority</h4>
+                                    <ul style="margin: 0; padding-left: 20px;">
+                                        ${actionData.highPriority.map(item => `<li style="color: #374151; margin-bottom: 8px;">${item}</li>`).join('')}
+                                    </ul>
+                                </div>
+                            ` : ''}
+                            
+                            ${actionData.mediumPriority?.length > 0 ? `
+                                <div style="background: #fef3c7; padding: 20px; border-radius: 12px; border-left: 4px solid #f59e0b;">
+                                    <h4 style="color: #f59e0b; margin: 0 0 15px 0;">🟡 Medium Priority</h4>
+                                    <ul style="margin: 0; padding-left: 20px;">
+                                        ${actionData.mediumPriority.map(item => `<li style="color: #374151; margin-bottom: 8px;">${item}</li>`).join('')}
+                                    </ul>
+                                </div>
+                            ` : ''}
+                            
+                            ${actionData.lowPriority?.length > 0 ? `
+                                <div style="background: #f0fdf4; padding: 20px; border-radius: 12px; border-left: 4px solid #10b981;">
+                                    <h4 style="color: #10b981; margin: 0 0 15px 0;">🟢 Low Priority</h4>
+                                    <ul style="margin: 0; padding-left: 20px;">
+                                        ${actionData.lowPriority.map(item => `<li style="color: #374151; margin-bottom: 8px;">${item}</li>`).join('')}
+                                    </ul>
+                                </div>
+                            ` : ''}
+                        </div>
+                        
+                        ${actionData.estimatedImpact ? `
+                            <div style="background: #f0f9ff; padding: 20px; border-radius: 12px; border-left: 4px solid #3b82f6;">
+                                <h4 style="color: #1e293b; margin: 0 0 15px 0;">📊 Estimated Impact</h4>
+                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                                    <div>
+                                        <strong>Time to Implement:</strong><br>
+                                        <span style="color: #374151;">${actionData.estimatedImpact.timeToImplement || 'Unknown'}</span>
+                                    </div>
+                                    <div>
+                                        <strong>Difficulty Level:</strong><br>
+                                        <span style="color: #374151;">${actionData.estimatedImpact.difficultyLevel || 'Unknown'}</span>
+                                    </div>
+                                    <div>
+                                        <strong>Expected ROI:</strong><br>
+                                        <span style="color: #374151;">${actionData.estimatedImpact.expectedROI || 'Unknown'}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+        }
+
+        function buildKeywordAnalysis(contentSEO) {
+            if (!contentSEO?.keywords?.length) return '';
+            
+            return `
+                <div class="report-section" style="background: white; border-radius: 20px; margin-bottom: 20px; box-shadow: 0 8px 25px rgba(0,0,0,0.08); overflow: hidden;">
+                    <div class="section-header" onclick="toggleSection(this)" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 25px 30px; display: flex; align-items: center; cursor: pointer;">
+                        <i class="fas fa-key"></i>
+                        <div style="font-size: 1.3rem; font-weight: 700; flex: 1; margin-left: 15px;">Keyword Analysis</div>
+                        <i class="fas fa-chevron-down" style="margin-left: auto;"></i>
+                    </div>
+                    <div class="section-content" style="padding: 30px; display: none;">
+                        <div style="background: #f8fafc; padding: 20px; border-radius: 12px;">
+                            <h4 style="color: #1e293b; margin: 0 0 20px 0;">Top Keywords Found</h4>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                                ${contentSEO.keywords.slice(0, 10).map(keyword => `
+                                    <div style="background: white; padding: 15px; border-radius: 8px; border-left: 4px solid #3b82f6;">
+                                        <div style="font-weight: 600; color: #1e293b; margin-bottom: 5px;">${keyword.word}</div>
+                                        <div style="color: #64748b; font-size: 0.9rem;">
+                                            Count: ${keyword.count} | 
+                                            Density: ${contentSEO.keywordDensity?.[keyword.word] || '0'}%
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function buildRawDataSection(data) {
+            return `
+                <div class="report-section" style="background: white; border-radius: 20px; margin-bottom: 20px; box-shadow: 0 8px 25px rgba(0,0,0,0.08); overflow: hidden;">
+                    <div class="section-header" onclick="toggleSection(this)" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 25px 30px; display: flex; align-items: center; cursor: pointer;">
+                        <i class="fas fa-code"></i>
+                        <div style="font-size: 1.3rem; font-weight: 700; flex: 1; margin-left: 15px;">🔍 Raw API Data (Debug)</div>
+                        <i class="fas fa-chevron-down" style="margin-left: auto;"></i>
+                    </div>
+                    <div class="section-content" style="padding: 30px; display: none;">
+                        <div style="background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 8px; padding: 20px; overflow-x: auto;">
+                            <pre style="margin: 0; font-family: 'Courier New', monospace; font-size: 12px; line-height: 1.5; color: #333; white-space: pre-wrap; word-wrap: break-word;">${JSON.stringify(data, null, 2)}</pre>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
