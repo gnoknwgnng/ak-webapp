@@ -1,23 +1,8 @@
 {
-  "version": 2,
-  "builds": [
+  "rewrites": [
     {
-      "src": "api/analyze.js",
-      "use": "@vercel/node"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/analyze",
-      "dest": "/api/analyze"
-    },
-    {
-      "src": "/",
-      "dest": "/public/index.html"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/public/$1"
+      "source": "/analyze",
+      "destination": "/api/analyze"
     }
   ]
 }
